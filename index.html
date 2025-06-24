@@ -5,56 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Store</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header, footer {
-      background-color: #333;
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav a {
-      color: #fff;
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-    .hero {
-      background-color: #f4f4f4;
-      padding: 2rem;
-      text-align: center;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      padding: 2rem;
-    }
-    .product {
-      border: 1px solid #ddd;
-      padding: 1rem;
-      text-align: center;
-    }
-    .product img {
-      width: 100%;
-      height: auto;
-    }
-    .about, .contact {
-      padding: 2rem;
-    }
-    .cart {
-      padding: 2rem;
-      background: #f9f9f9;
-    }
-    .cart-items {
-      list-style: none;
-      padding: 0;
-    }
-    .cart-items li {
-      padding: 0.5rem 0;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header, footer { background-color: #333; color: #fff; padding: 1rem; text-align: center; }
+    nav a { color: #fff; margin: 0 1rem; text-decoration: none; }
+    .hero { background-color: #f4f4f4; padding: 2rem; text-align: center; }
+    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 2rem; }
+    .product { border: 1px solid #ddd; padding: 1rem; text-align: center; }
+    .product img { width: 100%; height: auto; }
+    .about, .contact, .cart { padding: 2rem; }
+    .cart { background: #f9f9f9; }
+    .cart-items { list-style: none; padding: 0; }
+    .cart-items li { padding: 0.5rem 0; }
+    .price { font-weight: bold; font-size: 1.2rem; }
+    .old-price { text-decoration: line-through; color: gray; margin-left: 0.5rem; }
+    .discount { color: green; font-weight: bold; margin-left: 0.5rem; }
+    .badge { background: #e0f9e0; color: green; display: inline-block; padding: 0.2rem 0.5rem; margin-top: 0.5rem; border-radius: 4px; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -76,21 +41,38 @@
 
   <section id="shop" class="products">
     <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Product 1">
+      <img src="https://via.placeholder.com/200" alt="Kids Kurta Set">
       <h3>Kids Kurta Set</h3>
-      <p>₹999</p>
+      <p>
+        <span class="price">₹999</span>
+        <span class="old-price">₹1299</span>
+        <span class="discount">23% off</span>
+      </p>
+      <div class="badge">Hot Deal</div>
       <button onclick="addToCart('Kids Kurta Set', 999)">Add to Cart</button>
     </div>
+
     <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Product 2">
+      <img src="https://via.placeholder.com/200" alt="Women's Saree">
       <h3>Women's Saree</h3>
-      <p>₹1499</p>
+      <p>
+        <span class="price">₹1499</span>
+        <span class="old-price">₹1799</span>
+        <span class="discount">17% off</span>
+      </p>
+      <div class="badge">New Launch</div>
       <button onclick="addToCart('Women\'s Saree', 1499)">Add to Cart</button>
     </div>
+
     <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Product 3">
+      <img src="https://via.placeholder.com/200" alt="Ethnic Dress">
       <h3>Ethnic Dress</h3>
-      <p>₹1299</p>
+      <p>
+        <span class="price">₹1299</span>
+        <span class="old-price">₹1499</span>
+        <span class="discount">13% off</span>
+      </p>
+      <div class="badge">Festival Offer</div>
       <button onclick="addToCart('Ethnic Dress', 1299)">Add to Cart</button>
     </div>
   </section>
