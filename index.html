@@ -1,17 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Store - Flipkart Style</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
+      background-color: #f1f3f6;
     }
     header, footer {
-      background-color: #333;
+      background-color: #2874f0;
       color: #fff;
       padding: 1rem;
       text-align: center;
@@ -20,57 +21,78 @@
       color: #fff;
       margin: 0 1rem;
       text-decoration: none;
+      font-weight: 500;
     }
     .hero {
-      background-color: #f4f4f4;
       padding: 2rem;
       text-align: center;
+      background-color: #fff;
+      margin-bottom: 1rem;
     }
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
       padding: 2rem;
     }
     .product {
-      border: 1px solid #ddd;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 1rem;
       text-align: center;
+      transition: transform 0.2s ease;
+    }
+    .product:hover {
+      transform: translateY(-5px);
     }
     .product img {
       width: 100%;
-      height: auto;
+      max-height: 200px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+    .new-price {
+      color: #212121;
+      font-size: 1.1rem;
+      font-weight: bold;
     }
     .old-price {
       text-decoration: line-through;
-      color: gray;
+      color: #878787;
       margin-left: 5px;
     }
-    .new-price {
-      color: black;
-      font-weight: bold;
-    }
     .discount {
-      color: green;
-      font-weight: bold;
+      color: #388e3c;
+      font-weight: 600;
       margin-left: 5px;
     }
     .label {
-      display: inline-block;
       background-color: #e6f4ea;
-      color: green;
-      font-size: 0.8rem;
-      font-weight: bold;
-      padding: 0.2rem 0.5rem;
+      color: #388e3c;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
       border-radius: 3px;
-      margin-top: 0.5rem;
+      display: inline-block;
+      margin: 0.5rem 0;
     }
-    .about, .contact {
-      padding: 2rem;
+    button {
+      background-color: #ff9f00;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
     }
-    .cart {
+    button:hover {
+      background-color: #fb8c00;
+    }
+    .about, .contact, .cart {
       padding: 2rem;
-      background: #f9f9f9;
+      background-color: #fff;
+      margin: 1rem;
+      border-radius: 8px;
     }
     .cart-items {
       list-style: none;
@@ -110,6 +132,7 @@
       <div class="label">Hot Deal</div>
       <button onclick="addToCart('Kids Kurta Set', 999)">Add to Cart</button>
     </div>
+
     <div class="product">
       <img src="https://via.placeholder.com/200" alt="Women's Saree">
       <h3>Women's Saree</h3>
@@ -119,8 +142,9 @@
         <span class="discount">17% off</span>
       </p>
       <div class="label">New Launch</div>
-      <button onclick="addToCart('Women's Saree', 1499)">Add to Cart</button>
+      <button onclick="addToCart('Women\'s Saree', 1499)">Add to Cart</button>
     </div>
+
     <div class="product">
       <img src="https://via.placeholder.com/200" alt="Ethnic Dress">
       <h3>Ethnic Dress</h3>
