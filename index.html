@@ -119,43 +119,7 @@
     <p>Your one-stop shop for ethnic and kids clothing!</p>
   </section>
 
-  <section id="shop" class="products">
-    <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Kids Kurta Set">
-      <h3>Kids Kurta Set</h3>
-      <p>
-        <span class="new-price">₹999</span>
-        <span class="old-price">₹1299</span>
-        <span class="discount">23% off</span>
-      </p>
-      <div class="label">Hot Deal</div>
-      <button onclick="addToCart('Kids Kurta Set', 999)">Add to Cart</button>
-    </div>
-
-    <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Women's Saree">
-      <h3>Women's Saree</h3>
-      <p>
-        <span class="new-price">₹1499</span>
-        <span class="old-price">₹1799</span>
-        <span class="discount">17% off</span>
-      </p>
-      <div class="label">New Launch</div>
-      <button onclick="addToCart('Women\'s Saree', 1499)">Add to Cart</button>
-    </div>
-
-    <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Ethnic Dress">
-      <h3>Ethnic Dress</h3>
-      <p>
-        <span class="new-price">₹1299</span>
-        <span class="old-price">₹1499</span>
-        <span class="discount">13% off</span>
-      </p>
-      <div class="label">Festival Offer</div>
-      <button onclick="addToCart('Ethnic Dress', 1299)">Add to Cart</button>
-    </div>
-  </section>
+  <section id="shop" class="products" id="product-list"></section>
 
   <section id="cart" class="cart">
     <h2>Your Cart</h2>
@@ -173,8 +137,8 @@
 
   <section id="contact" class="contact">
     <h2>Contact Us</h2>
-    <p>Email: example@store.com</p>
-    <p>Phone: +91 98765 43210</p>
+    <p>Email: dhanki@store.com</p>
+    <p>Phone: +91 8110995272</p>
   </section>
 
   <footer>
@@ -182,6 +146,33 @@
   </footer>
 
   <script>
+    const products = [
+      {
+        name: "Kids Kurta Set",
+        price: 899,
+        oldPrice: 1299,
+        discount: "25% off",
+        label: "Hot Deal",
+        image: "https://via.placeholder.com/200"
+      },
+      {
+        name: "Women's Saree",
+        price: 1399,
+        oldPrice: 1799,
+        discount: "18% off",
+        label: "New Launch",
+        image: "https://via.placeholder.com/200"
+      },
+      {
+        name: "Ethnic Dress",
+        price: 1199,
+        oldPrice: 1499,
+        discount: "16% off",
+        label: "Festival Offer",
+        image: "https://via.placeholder.com/200"
+      }
+    ];
+
     const cart = [];
 
     function addToCart(name, price) {
@@ -206,6 +197,30 @@
       cartCount.textContent = cart.length;
       totalElement.textContent = total;
     }
+
+    function renderProducts() {
+      const productList = document.getElementById('shop');
+      productList.innerHTML = '';
+      products.forEach(product => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>
+            <span class="new-price">₹${product.price}</span>
+            <span class="old-price">₹${product.oldPrice}</span>
+            <span class="discount">${product.discount}</span>
+          </p>
+          <div class="label">${product.label}</div>
+          <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    // Initialize
+    renderProducts();
   </script>
 </body>
 </html>
