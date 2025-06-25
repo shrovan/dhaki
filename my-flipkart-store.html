@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Store - Flipkart Style</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f1f3f6;
+    }
+    header, footer {
+      background-color: #2874f0;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .hero {
+      padding: 2rem;
+      text-align: center;
+      background-color: #fff;
+      margin-bottom: 1rem;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .product {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+    }
+    .product img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+    .new-price {
+      color: #212121;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .old-price {
+      text-decoration: line-through;
+      color: #878787;
+      margin-left: 5px;
+    }
+    .discount {
+      color: #388e3c;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+    .label {
+      background-color: #e6f4ea;
+      color: #388e3c;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 3px;
+      display: inline-block;
+      margin: 0.5rem 0;
+    }
+    button {
+      background-color: #ff9f00;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #fb8c00;
+    }
+    .about, .contact, .cart {
+      padding: 2rem;
+      background-color: #fff;
+      margin: 1rem;
+      border-radius: 8px;
+    }
+    .cart-items {
+      list-style: none;
+      padding: 0;
+    }
+    .cart-items li {
+      padding: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Store</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <h2>Welcome to My Store</h2>
+    <p>Your one-stop shop for ethnic and kids clothing!</p>
+  </section>
+
+  <section id="shop" class="products" id="product-list"></section>
+
+  <section id="cart" class="cart">
+    <h2>Your Cart</h2>
+    <ul id="cart-items" class="cart-items"></ul>
+    <p>Total: ₹<span id="total">0</span></p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNue384C7u2rq1_2j_JOwgUlLC6HgaZkf6y_1E3gQf1EzpGQ/viewform?usp=dialog" target="_blank">
+      <button style="margin-top: 1rem;">Place Order</button>
+    </a>
+  </section>
+
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>We are passionate about providing high-quality ethnic and kids clothing at affordable prices. Based in Tiruppur, we aim to serve families across India.</p>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: dhanki@store.com</p>
+    <p>Phone: +91 8110995272</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 My Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        name: "Kids Kurta Set",
+        price: 899,
+        oldPrice: 1299,
+        discount: "25% off",
+        label: "Hot Deal",
+        image: "https://via.placeholder.com/200"
+      },
+      {
+        name: "Women's Saree",
+        price: 1399,
+        oldPrice: 1799,
+        discount: "18% off",
+        label: "New Launch",
+        image: "https://via.placeholder.com/200"
+      },
+      {
+        name: "Ethnic Dress",
+        price: 1199,
+        oldPrice: 1499,
+        discount: "16% off",
+        label: "Festival Offer",
+        image: "https://via.placeholder.com/200"
+      }
+    ];
+
+    const cart = [];
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      const totalElement = document.getElementById('total');
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ₹${item.price}`;
+        cartItems.appendChild(li);
+        total += item.price;
+      });
+
+      cartCount.textContent = cart.length;
+      totalElement.textContent = total;
+    }
+
+    function renderProducts() {
+      const productList = document.getElementById('shop');
+      productList.innerHTML = '';
+      products.forEach(product => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>
+            <span class="new-price">₹${product.price}</span>
+            <span class="old-price">₹${product.oldPrice}</span>
+            <span class="discount">${product.discount}</span>
+          </p>
+          <div class="label">${product.label}</div>
+          <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    // Initialize
+    renderProducts();
+  </script>
+</body>
+</html>
