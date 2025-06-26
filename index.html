@@ -119,15 +119,14 @@
     <p>Your one-stop shop for ethnic and kids clothing!</p>
   </section>
 
-  <section id="shop" class="products" id="product-list"></section>
+  <section id="shop" class="products"></section>
 
   <section id="cart" class="cart">
     <h2>Your Cart</h2>
     <ul id="cart-items" class="cart-items"></ul>
     <p>Total: ₹<span id="total">0</span></p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNue384C7u2rq1_2j_JOwgUlLC6HgaZkf6y_1E3gQf1EzpGQ/viewform?usp=dialog" target="_blank">
-      <button style="margin-top: 1rem;">Place Order</button>
-    </a>
+    <textarea id="address" placeholder="Enter your delivery address..." style="width:100%;margin-top:1rem;padding:0.5rem;"></textarea>
+    <button id="order-button" style="margin-top: 1rem;">Place Order</button>
   </section>
 
   <section id="about" class="about">
@@ -176,7 +175,12 @@
     const cart = [];
 
     function addToCart(name, price) {
-      cart.push({ name, price });
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
       updateCart();
     }
 
@@ -186,15 +190,17 @@
       const totalElement = document.getElementById('total');
       cartItems.innerHTML = '';
       let total = 0;
+      let count = 0;
 
       cart.forEach(item => {
         const li = document.createElement('li');
-        li.textContent = `${item.name} - ₹${item.price}`;
+        li.textContent = `${item.name} x${item.quantity} - ₹${item.price * item.quantity}`;
         cartItems.appendChild(li);
-        total += item.price;
+        total += item.price * item.quantity;
+        count += item.quantity;
       });
 
-      cartCount.textContent = cart.length;
+      cartCount.textContent = count;
       totalElement.textContent = total;
     }
 
@@ -218,6 +224,18 @@
         productList.appendChild(div);
       });
     }
+
+    document.getElementById("order-button").addEventListener("click", function () {
+      if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+      }
+      const productDetails = cart.map(item => `${item.name} x${item.quantity}`).join(", ");
+      const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const address = encodeURIComponent(document.getElementById("address").value);
+      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSeNue384C7u2rq1_2j_JOwgUlLC6HgaZkf6y_1E3gQf1EzpGQ/viewform?usp=pp_url&entry.1234567890=${encodeURIComponent(productDetails)}&entry.9876543210=${totalPrice}&entry.2468135790=${address}`;
+      window.open(formUrl, '_blank');
+    });
 
     // Initialize
     renderProducts();
