@@ -3,141 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Store - Flipkart Style</title>
+  <title>My Store</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background-color: #f1f3f6;
-    }
+    body { font-family: Arial; background: #f1f3f6; margin: 0; padding: 0; }
     header, footer {
-      background-color: #2874f0;
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
+      background: #2874f0; color: #fff; padding: 1rem; text-align: center;
     }
     nav a {
-      color: #fff;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .hero {
-      padding: 2rem;
-      text-align: center;
-      background-color: #fff;
-      margin-bottom: 1rem;
+      color: #fff; margin: 0 1rem; text-decoration: none; font-weight: bold;
     }
     .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      padding: 2rem;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; padding: 2rem;
     }
     .product {
-      background: #fff;
-      border-radius: 8px;
+      background: #fff; padding: 1rem; border-radius: 8px; text-align: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.2s ease;
-    }
-    .product:hover {
-      transform: translateY(-5px);
     }
     .product img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: contain;
-      margin-bottom: 1rem;
-    }
-    .new-price {
-      color: #212121;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-    .old-price {
-      text-decoration: line-through;
-      color: #878787;
-      margin-left: 5px;
-    }
-    .discount {
-      color: #388e3c;
-      font-weight: 600;
-      margin-left: 5px;
-    }
-    .label {
-      background-color: #e6f4ea;
-      color: #388e3c;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 3px;
-      display: inline-block;
-      margin: 0.5rem 0;
+      max-width: 100%; height: 150px; object-fit: cover;
     }
     button {
-      background-color: #ff9f00;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
+      background-color: #ff9f00; border: none; padding: 0.5rem 1rem;
+      border-radius: 4px; font-weight: bold; cursor: pointer;
     }
-    button:hover {
-      background-color: #fb8c00;
+    .cart {
+      background: #fff; padding: 2rem; margin: 1rem; border-radius: 8px;
     }
-    .about, .contact, .cart {
-      padding: 2rem;
-      background-color: #fff;
-      margin: 1rem;
-      border-radius: 8px;
-    }
-    .cart-items {
-      list-style: none;
-      padding: 0;
-    }
-    .cart-items li {
-      padding: 0.5rem 0;
+    .cart-item { margin: 10px 0; }
+    textarea {
+      width: 100%; padding: 0.5rem; margin-top: 1rem; border-radius: 5px; border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>My Store</h1>
+    <h1>My Online Store</h1>
     <nav>
-      <a href="#home">Home</a>
       <a href="#shop">Shop</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
       <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
     </nav>
   </header>
 
-  <section id="home" class="hero">
-    <h2>Welcome to My Store</h2>
-    <p>Your one-stop shop for ethnic and kids clothing!</p>
-  </section>
-
   <section id="shop" class="products"></section>
 
   <section id="cart" class="cart">
-    <h2>Your Cart</h2>
-    <ul id="cart-items" class="cart-items"></ul>
-    <p>Total: ₹<span id="total">0</span></p>
-    <textarea id="address" placeholder="Enter your delivery address..." style="width:100%;margin-top:1rem;padding:0.5rem;"></textarea>
-    <button id="order-button" style="margin-top: 1rem;">Place Order</button>
-  </section>
-
-  <section id="about" class="about">
-    <h2>About Us</h2>
-    <p>We are passionate about providing high-quality ethnic and kids clothing at affordable prices. Based in Tiruppur, we aim to serve families across India.</p>
-  </section>
-
-  <section id="contact" class="contact">
-    <h2>Contact Us</h2>
-    <p>Email: dhanki@store.com</p>
-    <p>Phone: +91 8110995272</p>
+    <h2>Cart</h2>
+    <div id="cart-items"></div>
+    <p><strong>Total:</strong> ₹<span id="total">0</span></p>
+    <textarea id="address" placeholder="Enter your delivery address here..."></textarea>
+    <button onclick="placeOrder()">Place Order</button>
   </section>
 
   <footer>
@@ -147,37 +62,23 @@
   <script>
     const products = [
       {
-        name: "Kids Kurta Set",
+        name: \"Kids Kurta Set\",
         price: 899,
-        oldPrice: 1299,
-        discount: "25% off",
-        label: "Hot Deal",
-        image: "https://via.placeholder.com/200"
+        image: \"https://via.placeholder.com/200x150?text=Kurta\"
       },
       {
-        name: "Women's Saree",
-        price: 1399,
-        oldPrice: 1799,
-        discount: "18% off",
-        label: "New Launch",
-        image: "https://via.placeholder.com/200"
-      },
-      {
-        name: "Ethnic Dress",
-        price: 1199,
-        oldPrice: 1499,
-        discount: "16% off",
-        label: "Festival Offer",
-        image: "https://via.placeholder.com/200"
+        name: \"Women Saree\",
+        price: 1499,
+        image: \"https://via.placeholder.com/200x150?text=Saree\"
       }
     ];
 
     const cart = [];
 
     function addToCart(name, price) {
-      const existing = cart.find(item => item.name === name);
-      if (existing) {
-        existing.quantity += 1;
+      const item = cart.find(p => p.name === name);
+      if (item) {
+        item.quantity += 1;
       } else {
         cart.push({ name, price, quantity: 1 });
       }
@@ -187,57 +88,58 @@
     function updateCart() {
       const cartItems = document.getElementById('cart-items');
       const cartCount = document.getElementById('cart-count');
-      const totalElement = document.getElementById('total');
+      const totalDisplay = document.getElementById('total');
       cartItems.innerHTML = '';
-      let total = 0;
-      let count = 0;
-
+      let total = 0, count = 0;
       cart.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `${item.name} x${item.quantity} - ₹${item.price * item.quantity}`;
-        cartItems.appendChild(li);
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerText = `${item.name} x${item.quantity} - ₹${item.price * item.quantity}`;
+        cartItems.appendChild(div);
         total += item.price * item.quantity;
         count += item.quantity;
       });
-
-      cartCount.textContent = count;
-      totalElement.textContent = total;
+      cartCount.innerText = count;
+      totalDisplay.innerText = total;
     }
 
     function renderProducts() {
-      const productList = document.getElementById('shop');
-      productList.innerHTML = '';
+      const shop = document.getElementById('shop');
       products.forEach(product => {
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
-          <img src="${product.image}" alt="${product.name}">
+          <img src=\"${product.image}\" alt=\"${product.name}\" />
           <h3>${product.name}</h3>
-          <p>
-            <span class="new-price">₹${product.price}</span>
-            <span class="old-price">₹${product.oldPrice}</span>
-            <span class="discount">${product.discount}</span>
-          </p>
-          <div class="label">${product.label}</div>
-          <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+          <p>₹${product.price}</p>
+          <button onclick=\"addToCart('${product.name}', ${product.price})\">Add to Cart</button>
         `;
-        productList.appendChild(div);
+        shop.appendChild(div);
       });
     }
 
-    document.getElementById("order-button").addEventListener("click", function () {
+    function placeOrder() {
       if (cart.length === 0) {
-        alert("Your cart is empty.");
+        alert('Cart is empty');
         return;
       }
-      const productDetails = cart.map(item => `${item.name} x${item.quantity}`).join(", ");
-      const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const address = encodeURIComponent(document.getElementById("address").value);
-      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSeNue384C7u2rq1_2j_JOwgUlLC6HgaZkf6y_1E3gQf1EzpGQ/viewform?usp=pp_url&entry.1234567890=${encodeURIComponent(productDetails)}&entry.9876543210=${totalPrice}&entry.2468135790=${address}`;
-      window.open(formUrl, '_blank');
-    });
 
-    // Initialize
+      const address = document.getElementById('address').value;
+      if (!address) {
+        alert('Please enter delivery address');
+        return;
+      }
+
+      const items = cart.map(i => `${i.name} x${i.quantity}`).join(', ');
+      const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+      const formURL = 'https://docs.google.com/forms/d/e/1FAIpQLSeNue384C7u2rq1_2j_JOwgUlLC6HgaZkf6y_1E3gQf1EzpGQ/viewform';
+      const url = `${formURL}?usp=pp_url&entry.1012440135=${encodeURIComponent(items)}&entry.583617210=${total}&entry.6989451230=${encodeURIComponent(address)}`;
+
+      window.open(url, '_blank');
+    }
+
+    // Load products on page load
     renderProducts();
   </script>
 </body>
