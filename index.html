@@ -34,6 +34,20 @@
       background-color: #198754;
       color: white;
     }
+    .original-price {
+      text-decoration: line-through;
+      color: gray;
+      margin-right: 5px;
+    }
+    .offer-price {
+      color: red;
+      font-weight: bold;
+    }
+    .offer-label {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 0;
+    }
   </style>
 </head>
 
@@ -60,21 +74,26 @@
 
   <script>
     const products = [
-      { name: "Kids Kurta Set", price: 899 },
-      { name: "Women Saree", price: 1299 },
-      { name: "Ethnic Dress", price: 1199 }
+      { name: "Kids Kurta Set", price: 899, originalPrice: 1299 },
+      { name: "Women Saree", price: 1299, originalPrice: 1799 },
+      { name: "Ethnic Dress", price: 1199, originalPrice: 1599 }
     ];
     const cart = {};
 
     function displayProducts() {
       const productList = document.getElementById("product-list");
       products.forEach((p, i) => {
+        const discountPercent = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
         const col = document.createElement("div");
         col.className = "col-md-4";
         col.innerHTML = `
           <div class="product-card">
             <h5>${p.name}</h5>
-            <p>Price: ₹${p.price}</p>
+            <p class="offer-label">Special Price</p>
+            <p>
+              <span class="original-price">₹${p.originalPrice}</span>
+              <span class="offer-price">₹${p.price} (${discountPercent}% OFF)</span>
+            </p>
             <button class="btn btn-primary" onclick="addToCart(${i})">Add to Cart</button>
           </div>
         `;
