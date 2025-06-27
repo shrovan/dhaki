@@ -1,146 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Store</title>
+  <meta charset="UTF-8">
+  <title>Dhaki Store</title>
   <style>
-    body { font-family: Arial; background: #f1f3f6; margin: 0; padding: 0; }
-    header, footer {
-      background: #2874f0; color: #fff; padding: 1rem; text-align: center;
-    }
-    nav a {
-      color: #fff; margin: 0 1rem; text-decoration: none; font-weight: bold;
-    }
-    .products {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem; padding: 2rem;
-    }
-    .product {
-      background: #fff; padding: 1rem; border-radius: 8px; text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .product img {
-      max-width: 100%; height: 150px; object-fit: cover;
-    }
-    button {
-      background-color: #ff9f00; border: none; padding: 0.5rem 1rem;
-      border-radius: 4px; font-weight: bold; cursor: pointer;
-    }
-    .cart {
-      background: #fff; padding: 2rem; margin: 1rem; border-radius: 8px;
-    }
-    .cart-item { margin: 10px 0; }
-    textarea {
-      width: 100%; padding: 0.5rem; margin-top: 1rem; border-radius: 5px; border: 1px solid #ccc;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+    header { background-color: #2874f0; color: white; padding: 1rem; text-align: center; }
+    .container { padding: 2rem; }
+    .product { background: white; margin-bottom: 1rem; padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; }
+    button { background: #2874f0; color: white; padding: 0.5rem 1rem; border: none; border-radius: 5px; cursor: pointer; }
+    .cart-summary, .address-field { background: white; padding: 1rem; margin-top: 1rem; border-radius: 8px; }
+    .address-field textarea { width: 100%; height: 60px; padding: 0.5rem; }
   </style>
 </head>
 <body>
   <header>
-    <h1>My Online Store</h1>
-    <nav>
-      <a href="#shop">Shop</a>
-      <a href="#cart">Cart (<span id="cart-count">0</span>)</a>
-    </nav>
+    <h1>Dhaki Online Store</h1>
   </header>
+  <div class="container">
+    <div class="product" data-name="Kids Kurta Set" data-price="899">
+      <div>
+        <h3>Kids Kurta Set</h3>
+        <p>Price: ₹899</p>
+      </div>
+      <button onclick="addToCart('Kids Kurta Set', 899)">Add to Cart</button>
+    </div>
+    <div class="product" data-name="Women Saree" data-price="1299">
+      <div>
+        <h3>Women Saree</h3>
+        <p>Price: ₹1299</p>
+      </div>
+      <button onclick="addToCart('Women Saree', 1299)">Add to Cart</button>
+    </div>
 
-  <section id="shop" class="products"></section>
+    <div class="cart-summary">
+      <h3>Cart</h3>
+      <ul id="cart-list"></ul>
+      <p><strong>Total: ₹<span id="total-price">0</span></strong></p>
+    </div>
 
-  <section id="cart" class="cart">
-    <h2>Cart</h2>
-    <div id="cart-items"></div>
-    <p><strong>Total:</strong> ₹<span id="total">0</span></p>
-    <textarea id="address" placeholder="Enter your delivery address here..."></textarea>
+    <div class="address-field">
+      <h3>Delivery Address</h3>
+      <textarea id="delivery-address" placeholder="Enter your delivery address"></textarea>
+    </div>
+
     <button onclick="placeOrder()">Place Order</button>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 My Store. All rights reserved.</p>
-  </footer>
+  </div>
 
   <script>
-    const products = [
-      {
-        name: \"Kids Kurta Set\",
-        price: 899,
-        image: \"https://via.placeholder.com/200x150?text=Kurta\"
-      },
-      {
-        name: \"Women Saree\",
-        price: 1499,
-        image: \"https://via.placeholder.com/200x150?text=Saree\"
-      }
-    ];
-
-    const cart = [];
-
+    let cart = [];
     function addToCart(name, price) {
-      const item = cart.find(p => p.name === name);
+      const item = cart.find(i => i.name === name);
       if (item) {
-        item.quantity += 1;
+        item.qty += 1;
       } else {
-        cart.push({ name, price, quantity: 1 });
+        cart.push({ name, price, qty: 1 });
       }
       updateCart();
     }
 
     function updateCart() {
-      const cartItems = document.getElementById('cart-items');
-      const cartCount = document.getElementById('cart-count');
-      const totalDisplay = document.getElementById('total');
-      cartItems.innerHTML = '';
-      let total = 0, count = 0;
+      const list = document.getElementById('cart-list');
+      const total = document.getElementById('total-price');
+      list.innerHTML = '';
+      let totalPrice = 0;
       cart.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerText = `${item.name} x${item.quantity} - ₹${item.price * item.quantity}`;
-        cartItems.appendChild(div);
-        total += item.price * item.quantity;
-        count += item.quantity;
+        const li = document.createElement('li');
+        li.textContent = `${item.name} × ${item.qty}`;
+        list.appendChild(li);
+        totalPrice += item.price * item.qty;
       });
-      cartCount.innerText = count;
-      totalDisplay.innerText = total;
-    }
-
-    function renderProducts() {
-      const shop = document.getElementById('shop');
-      products.forEach(product => {
-        const div = document.createElement('div');
-        div.className = 'product';
-        div.innerHTML = `
-          <img src=\"${product.image}\" alt=\"${product.name}\" />
-          <h3>${product.name}</h3>
-          <p>₹${product.price}</p>
-          <button onclick=\"addToCart('${product.name}', ${product.price})\">Add to Cart</button>
-        `;
-        shop.appendChild(div);
-      });
+      total.textContent = totalPrice;
     }
 
     function placeOrder() {
       if (cart.length === 0) {
-        alert('Cart is empty');
+        alert('Your cart is empty.');
         return;
       }
-
-      const address = document.getElementById('address').value;
+      const address = document.getElementById('delivery-address').value.trim();
       if (!address) {
-        alert('Please enter delivery address');
+        alert('Please enter delivery address.');
         return;
       }
+      const productList = cart.map(item => `${item.name} × ${item.qty}`).join(', ');
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-      const items = cart.map(i => `${i.name} x${i.quantity}`).join(', ');
-      const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform";
+      const filledUrl = formUrl +
+        `?usp=pp_url` +
+        `&entry.1234567890=${encodeURIComponent(productList)}` +
+        `&entry.1234567891=${encodeURIComponent(total)}` +
+        `&entry.1234567892=${encodeURIComponent(address)}`;
 
-      const formURL = 'https://docs.google.com/forms/d/e/1FAIpQLSeNue384C7u2rq1_2j_JOwgUlLC6HgaZkf6y_1E3gQf1EzpGQ/viewform';
-      const url = `${formURL}?usp=pp_url&entry.1012440135=${encodeURIComponent(items)}&entry.583617210=${total}&entry.6989451230=${encodeURIComponent(address)}`;
-
-      window.open(url, '_blank');
+      window.open(filledUrl, '_blank');
     }
-
-    // Load products on page load
-    renderProducts();
   </script>
 </body>
 </html>
+sion expired
