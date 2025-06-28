@@ -48,6 +48,12 @@
       font-weight: bold;
       margin-bottom: 0;
     }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 10px;
+    }
   </style>
 </head>
 
@@ -82,6 +88,7 @@
 
     function displayProducts() {
       const productList = document.getElementById("product-list");
+      productList.innerHTML = "";
       products.forEach((p, i) => {
         const discountPercent = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
         const col = document.createElement("div");
@@ -94,7 +101,11 @@
               <span class="original-price">₹${p.originalPrice}</span>
               <span class="offer-price">₹${p.price} (${discountPercent}% OFF)</span>
             </p>
-            <button class="btn btn-primary" onclick="addToCart(${i})">Add to Cart</button>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-primary" onclick="addToCart(${i})">Add to Cart</button>
+              <button class="btn btn-sm btn-warning" onclick="buyNow(${i})">Buy Now</button>
+              <button class="btn btn-sm btn-outline-info" onclick="viewDetails(${i})">View Details</button>
+            </div>
           </div>
         `;
         productList.appendChild(col);
@@ -133,6 +144,15 @@
       const total = document.getElementById("total").textContent;
       const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url&entry.1472233703=${encodeURIComponent(productList)}&entry.1291401696=${encodeURIComponent(total)}&entry.1712539989=${encodeURIComponent(address)}`;
       window.open(formUrl, '_blank');
+    }
+
+    function buyNow(index) {
+      addToCart(index);
+      placeOrder();
+    }
+
+    function viewDetails(index) {
+      alert("More product details coming soon! (Product: " + products[index].name + ")");
     }
 
     displayProducts();
