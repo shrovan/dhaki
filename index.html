@@ -142,7 +142,10 @@
       }
       const productList = Object.entries(cart).map(([n, q]) => `${n} x${q}`).join(", ");
       const total = document.getElementById("total").textContent;
-      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url&entry.1472233703=${encodeURIComponent(productList)}&entry.1291401696=${encodeURIComponent(total)}&entry.1712539989=${encodeURIComponent(address)}`;
+      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url`
+        + `&entry.1755887486=${encodeURIComponent(productList)}`
+        + `&entry.1544041918=${encodeURIComponent(total)}`
+        + `&entry.516469373=${encodeURIComponent(address)}`;
       window.open(formUrl, '_blank');
     }
 
