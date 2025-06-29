@@ -6,11 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dhaki Store</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <head>
   <style>
-  </style>
-</head>
-
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f1f1f1;
@@ -59,6 +55,8 @@
       margin-top: 10px;
     }
   </style>
+</head>
+
 <body>
   <header>
     <h1>Dhaki Online Store</h1>
@@ -144,10 +142,7 @@
       }
       const productList = Object.entries(cart).map(([n, q]) => `${n} x${q}`).join(", ");
       const total = document.getElementById("total").textContent;
-      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url`
-        + `&entry.1755887486=${encodeURIComponent(productList)}`
-        + `&entry.1544041918=${encodeURIComponent(total)}`
-        + `&entry.516469373=${encodeURIComponent(address)}`;
+      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url&entry.1472233703=${encodeURIComponent(productList)}&entry.1291401696=${encodeURIComponent(total)}&entry.1712539989=${encodeURIComponent(address)}`;
       window.open(formUrl, '_blank');
     }
 
