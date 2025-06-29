@@ -1,113 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dhaki Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f1f1;
     }
     header {
-      background-color: #2874f0;
-      color: #fff;
+      background: #0d6efd;
+      color: white;
       padding: 1rem;
       text-align: center;
-    }
-    .banner {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .banner img {
-      width: 100%;
-      height: auto;
-      border-radius: 4px;
-    }
-    section.hero {
-      background-color: #fff;
-      padding: 2rem;
-      text-align: center;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      padding: 2rem;
-      background-color: #fff;
     }
     .product-card {
-      background: #fff;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      text-align: center;
+      margin-bottom: 1.5rem;
     }
-    .product-card img {
-      width: 100%;
-      border-radius: 8px;
-      height: 200px;
-      object-fit: cover;
+    .cart-area {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 2rem;
     }
-    .product-card h3 {
-      margin: 0.5rem 0;
+    .btn-order {
+      background-color: #198754;
+      color: white;
     }
-    .product-card p {
-      color: green;
+    .original-price {
+      text-decoration: line-through;
+      color: gray;
+      margin-right: 5px;
+    }
+    .offer-price {
+      color: red;
       font-weight: bold;
     }
-    .product-card del {
-      color: red;
-      margin-right: 0.5rem;
+    .offer-label {
+      color: green;
+      font-weight: bold;
+      margin-bottom: 0;
     }
-    .offer {
-      display: block;
-      color: #d9534f;
-      font-size: 0.9rem;
-    }
-    .product-card button {
-      background-color: #2874f0;
-      color: #fff;
-      border: none;
-      padding: 0.5rem 1rem;
-      margin-top: 0.5rem;
-      cursor: pointer;
-      border-radius: 4px;
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 10px;
     }
   </style>
 </head>
-<body>
 
+<body>
   <header>
-    <h1>Dhaki Store</h1>
+    <h1>Dhaki Online Store</h1>
+    <p>Ethnic & Kids Wear - Delivered to Your Doorstep</p>
   </header>
 
-  <section class="banner">
-    <img src="banner.jpg" alt="Big Sale Banner">
-  </section>
+<!-- Banner Section -->
+<div class="container my-3">
+  <img src="ChatGPT Image Jun 29, 2025, 09_38_11 AM.png" alt="Store Banner" class="img-fluid rounded shadow-sm">
+</div>
 
-  <section class="hero">
-    <h2>Welcome to Dhaki Store</h2>
-    <p>Your one-stop shop for fashion and festival wear!</p>
-  </section>
 
-  <section class="products">
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x200?text=Kids+Kurta+Set" alt="Kids Kurta Set">
-      <h3>Kids Kurta Set</h3>
-      <p><del>₹1299</del> ₹899</p>
-      <span class="offer">30% OFF</span>
-      <button>Add to Cart</button>
+  <div class="container my-4">
+    <div class="row" id="product-list"></div>
+
+    <div class="cart-area">
+      <h3>Cart Summary</h3>
+      <ul id="cart-items"></ul>
+      <p><strong>Total: ₹<span id="total">0</span></strong></p>
+      <div class="mb-3">
+        <label for="address" class="form-label">Delivery Address</label>
+        <textarea id="address" class="form-control" rows="2" placeholder="Enter delivery address"></textarea>
+      </div>
+      <button onclick="placeOrder()" class="btn btn-order">Place Order</button>
     </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x200?text=Women+Saree" alt="Women Saree">
-      <h3>Women Saree</h3>
-      <p><del>₹1999</del> ₹1499</p>
-      <span class="offer">25% OFF</span>
-      <button>Add to Cart</button>
-    </div>
-  </section>
+  </div>
 
+  <script>
+    const products = [
+      { name: "Kids Kurta Set", price: 899, originalPrice: 1299 },
+      { name: "Women Saree", price: 1299, originalPrice: 1799 },
+      { name: "Ethnic Dress", price: 1199, originalPrice: 1599 }
+    ];
+    const cart = {};
+
+    function displayProducts() {
+      const productList = document.getElementById("product-list");
+      productList.innerHTML = "";
+      products.forEach((p, i) => {
+        const discountPercent = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
+        const col = document.createElement("div");
+        col.className = "col-md-4";
+        col.innerHTML = `
+          <div class="product-card">
+            <h5>${p.name}</h5>
+            <p class="offer-label">Special Price</p>
+            <p>
+              <span class="original-price">₹${p.originalPrice}</span>
+              <span class="offer-price">₹${p.price} (${discountPercent}% OFF)</span>
+            </p>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-primary" onclick="addToCart(${i})">Add to Cart</button>
+              <button class="btn btn-sm btn-warning" onclick="buyNow(${i})">Buy Now</button>
+              <button class="btn btn-sm btn-outline-info" onclick="viewDetails(${i})">View Details</button>
+            </div>
+          </div>
+        `;
+        productList.appendChild(col);
+      });
+    }
+
+    function addToCart(index) {
+      const item = products[index];
+      cart[item.name] = (cart[item.name] || 0) + 1;
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById("cart-items");
+      const totalEl = document.getElementById("total");
+      cartItems.innerHTML = "";
+      let total = 0;
+      for (let name in cart) {
+        const qty = cart[name];
+        const price = products.find(p => p.name === name).price;
+        const li = document.createElement("li");
+        li.textContent = `${name} × ${qty}`;
+        cartItems.appendChild(li);
+        total += qty * price;
+      }
+      totalEl.textContent = total;
+    }
+
+    function placeOrder() {
+      const address = document.getElementById("address").value.trim();
+      if (!address || Object.keys(cart).length === 0) {
+        alert("Please enter an address and add items to cart.");
+        return;
+      }
+      const productList = Object.entries(cart).map(([n, q]) => `${n} x${q}`).join(", ");
+      const total = document.getElementById("total").textContent;
+      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url&entry.1472233703=${encodeURIComponent(productList)}&entry.1291401696=${encodeURIComponent(total)}&entry.1712539989=${encodeURIComponent(address)}`;
+      window.open(formUrl, '_blank');
+    }
+
+    function buyNow(index) {
+      addToCart(index);
+      placeOrder();
+    }
+
+    function viewDetails(index) {
+      alert("More product details coming soon! (Product: " + products[index].name + ")");
+    }
+
+    displayProducts();
+  </script>
 </body>
 </html>
