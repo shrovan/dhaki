@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,9 +75,27 @@
 
   <script>
     const products = [
-      { name: "Kids cloth Set", price: 899, originalPrice: 1299, category: "kids" },
-      { name: "Women Saree", price: 1299, originalPrice: 1799, category: "women" },
-      { name: "Ethnic Dress", price: 1199, originalPrice: 1599, category: "festival" }
+      {
+        name: "Kids Kurta Set",
+        price: 899,
+        originalPrice: 1299,
+        category: "kids",
+        image: "https://via.placeholder.com/300x200?text=Kids+Kurta+Set"
+      },
+      {
+        name: "Women Saree",
+        price: 1299,
+        originalPrice: 1799,
+        category: "women",
+        image: "https://via.placeholder.com/300x200?text=Women+Saree"
+      },
+      {
+        name: "Ethnic Dress",
+        price: 1199,
+        originalPrice: 1599,
+        category: "festival",
+        image: "https://via.placeholder.com/300x200?text=Ethnic+Dress"
+      }
     ];
     const cart = {};
 
@@ -90,6 +109,7 @@
           col.className = "col-md-4";
           col.innerHTML = `
             <div class="product-card" data-category="${p.category}">
+              <img src="${p.image}" alt="${p.name}" class="img-fluid rounded mb-2" />
               <h5>${p.name}</h5>
               <p class="offer-label">Special Price</p>
               <p>
@@ -127,13 +147,40 @@
       let total = 0;
       for (let name in cart) {
         const qty = cart[name];
-        const price = products.find(p => p.name === name).price;
+        const product = products.find(p => p.name === name);
+        const price = product.price;
         const li = document.createElement("li");
-        li.textContent = `${name} × ${qty}`;
+        li.innerHTML = `
+          ${name} × ${qty} = ₹${qty * price}
+          <div style="margin-top: 5px;">
+            <button onclick="decreaseQty('${name}')" class="btn btn-sm btn-outline-secondary">➖</button>
+            <button onclick="increaseQty('${name}')" class="btn btn-sm btn-outline-secondary">➕</button>
+            <button onclick="removeItem('${name}')" class="btn btn-sm btn-outline-danger">❌ Remove</button>
+          </div>
+        `;
         cartItems.appendChild(li);
         total += qty * price;
       }
       totalEl.textContent = total;
+    }
+
+    function increaseQty(name) {
+      cart[name]++;
+      updateCart();
+    }
+
+    function decreaseQty(name) {
+      if (cart[name] > 1) {
+        cart[name]--;
+      } else {
+        delete cart[name];
+      }
+      updateCart();
+    }
+
+    function removeItem(name) {
+      delete cart[name];
+      updateCart();
     }
 
     function placeOrder() {
