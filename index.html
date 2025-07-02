@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,7 +63,8 @@
       </div>
 
       <button onclick="clearCart()" class="btn btn-sm btn-clear mb-2">Clear Cart</button>
-      <button onclick="placeOrder()" class="btn btn-order w-100">Place Order</button>
+      <button onclick="placeOrder()" class="btn btn-order w-100 mb-2">Place Order</button>
+      
     </div>
   </div>
 
@@ -72,7 +74,6 @@
       { name: "Women Saree", price: 1299, originalPrice: 1799, category: "Saree" },
       { name: "Ethnic Dress", price: 1199, originalPrice: 1599, category: "Ethnic" },
       { name: "Warner Playground Kids T-Shirt", price: 499, originalPrice: 799, category: "Kids", image: "https://i.postimg.cc/MTRN6LW6/Chat-GPT-Image-Jun-30-2025-12-24-32-PM.png" },
-      
       { name: "New Ethnic Dress Combo", price: 1499, originalPrice: 1999, category: "Ethnic", image: "https://i.postimg.cc/MXBk2PDs/image.png" }
     ];
 
@@ -163,15 +164,42 @@
 
     function placeOrder() {
       const address = document.getElementById("address").value.trim();
-      const coupon = document.getElementById("coupon").value.trim();
       if (!address || Object.keys(cart).length === 0) {
         alert("Please enter an address and add items to cart.");
         return;
       }
-      const items = Object.entries(cart).map(([name, qty]) => `${name} x${qty}`).join(", ");
+
+      const productName = Object.entries(cart).map(([name, qty]) => `${name} x${qty}`).join(", ");
       const total = document.getElementById("total").textContent;
-      const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url&entry.1472233703=${encodeURIComponent(items)}&entry.1291401696=${encodeURIComponent(total)}&entry.1712539989=${encodeURIComponent(address)}&entry.1821392497=${encodeURIComponent(coupon)}`;
-      window.open(formUrl, "_blank");
+      const paymentMethod = "Cash on Delivery";
+
+      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url" +
+        "&entry.516469373=" + encodeURIComponent(address) +
+        "&entry.1755887486=" + encodeURIComponent(productName) +
+        "&entry.1544041918=" + encodeURIComponent(total) +
+        "&entry.1821392497=" + encodeURIComponent(paymentMethod);
+
+      window.open(formURL, "_blank");
+    }
+
+    function placeOrderAutofill() {
+      const address = document.getElementById("address").value.trim();
+      if (!address || Object.keys(cart).length === 0) {
+        alert("Please enter an address and add items to cart.");
+        return;
+      }
+
+      const productName = Object.entries(cart).map(([name, qty]) => `${name} x${qty}`).join(", ");
+      const total = document.getElementById("total").textContent;
+      const paymentMethod = "Cash on Delivery";
+
+      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url" +
+        "&entry.516469373=" + encodeURIComponent(address) +
+        "&entry.1755887486=" + encodeURIComponent(productName) +
+        "&entry.1544041918=" + encodeURIComponent(total) +
+        "&entry.1821392497=" + encodeURIComponent(paymentMethod);
+
+      window.open(formURL, "_blank");
     }
 
     function buyNow(index) {
