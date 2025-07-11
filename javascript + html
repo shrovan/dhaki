@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Place Order</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, select, button {
+      display: block;
+      margin-bottom: 12px;
+      padding: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Complete Your Order</h2>
+
+  <input type="text" id="user-name" placeholder="Your Name" required>
+  <input type="tel" id="user-phone" placeholder="Phone Number" required>
+  <input type="text" id="address" placeholder="Your Address" required>
+
+  <select id="delivery-option">
+    <option value="Standard Delivery">Standard Delivery</option>
+    <option value="Express Delivery">Express Delivery</option>
+  </select>
+
+  <button id="order-button">Place Order</button>
+
+  <script>
+    // Sample cart array (replace with your real cart data)
+    const cart = [
+      { name: "T-shirt", quantity: 2, price: 299 },
+      { name: "Hoodie", quantity: 1, price: 699 }
+    ];
+
+    document.getElementById("order-button").addEventListener("click", function () {
+      if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+      }
+
+      const userName = encodeURIComponent(document.getElementById("user-name").value.trim());
+      const userPhone = encodeURIComponent(document.getElementById("user-phone").value.trim());
+      const address = encodeURIComponent(document.getElementById("address").value.trim());
+      const deliveryOption = encodeURIComponent(document.getElementById("delivery-option").value);
+
+      if (!userName || !userPhone || !address) {
+        alert("Please fill in all fields: Name, Phone, and Address.");
+        return;
+      }
+
+      const productDetails = cart.map(item => `${item.name} x${item.quantity}`).join(", ");
+      const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      const confirmOrder = confirm(
+        `🧾 Confirm Your Order:\n\n👕 Items: ${productDetails}\n💰 Total: ₹${totalPrice}\n📦 Delivery: ${decodeURIComponent(deliveryOption)}\n\n🧑 Name: ${decodeURIComponent(userName)}\n📱 Phone: ${decodeURIComponent(userPhone)}\n🏠 Address: ${decodeURIComponent(address)}`
+      );
+
+      if (!confirmOrder) return;
+
+      // Dummy entry IDs – replace with your real Google Form entry values
+      const formUrl = `https://docs.google.com/forms/d/e/your-form-id/viewform?usp=pp_url`
+        + `&entry.1111111111=${userName}`              // Name
+        + `&entry.2222222222=${userPhone}`            // Phone
+        + `&entry.3333333333=${address}`              // Address
+        + `&entry.4444444444=${productDetails}`       // Product details
+        + `&entry.5555555555=${totalPrice}`           // Total price
+        + `&entry.6666666666=${deliveryOption}`;      // Delivery option
+
+      window.open(formUrl, '_blank');
+    });
+  </script>
+
+</body>
+</html>
