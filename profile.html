@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Online Store</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Profile menu styling */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .profile-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .profile-menu button {
+      background-color: white;
+      color: #4CAF50;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 10px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔝 Top Header with Profile Button -->
+  <div class="header-bar">
+    <div class="logo"><h2>My Online Store</h2></div>
+    <div class="profile-menu">
+      <button onclick="toggleProfileMenu()">👤 Profile</button>
+      <div id="profileDropdown" class="dropdown-content">
+        <a href="#">My Orders</a>
+        <a href="#">Settings</a>
+        <a href="#">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔽 Main content of your store goes here -->
+  <div class="main-content">
+    <!-- Add your products, filters, cart, etc. -->
+  </div>
+
+  <!-- 🔚 JavaScript for Profile Dropdown -->
+  <script>
+    function toggleProfileMenu() {
+      const menu = document.getElementById("profileDropdown");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.closest('.profile-menu')) {
+        const dropdown = document.getElementById("profileDropdown");
+        if (dropdown) dropdown.style.display = "none";
+      }
+    };
+  </script>
+
+</body>
+</html>
