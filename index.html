@@ -1,33 +1,29 @@
-<!DOCTYPE html>`
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dhaki Store</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kids T-shirt Store</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f1f1f1; }
-    header { background: #0d6efd; color: white; padding: 1rem; text-align: center; position: relative; }
-    .product-card { background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 1rem; margin-bottom: 1.5rem; }
-    .product-card img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
-    .btn-order { background-color: #198754; color: white; }
-    .btn-clear { background-color: #dc3545; color: white; }
-    .original-price { text-decoration: line-through; color: gray; margin-right: 5px; }
-    .offer-price { color: red; font-weight: bold; }
-    .offer-label { color: green; font-weight: bold; margin-bottom: 0; }
-    .btn-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 10px; }
-    .cart-area { background: white; padding: 1rem; border-radius: 10px; margin-top: 2rem; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding: 5px 0; }
-    .cart-controls button { margin-left: 5px; }
-    .category-filter { margin: 1rem 0; text-align: center; }
-    .category-filter button { margin: 0 5px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
 
-    /* 👤 Profile Button Styles */
+    header {
+      background-color: #0d6efd;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
     .profile-menu {
       position: absolute;
-      top: 15px;
+      top: 10px;
       right: 20px;
-      display: inline-block;
     }
 
     .profile-menu button {
@@ -37,7 +33,7 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: bold;
     }
 
     .dropdown-content {
@@ -45,11 +41,10 @@
       position: absolute;
       right: 0;
       background-color: white;
-      min-width: 150px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       border-radius: 6px;
-      overflow: hidden;
+      z-index: 1;
     }
 
     .dropdown-content a {
@@ -62,205 +57,189 @@
     .dropdown-content a:hover {
       background-color: #f1f1f1;
     }
+
+    .product-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 10px;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .product img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      font-size: 1.1em;
+      margin: 10px 0 5px;
+    }
+
+    .product p {
+      margin: 5px 0;
+      font-size: 0.9em;
+    }
+
+    .product button {
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .product button:hover {
+      background-color: #0b5ed7;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      width: 300px;
+    }
+
+    .modal-content h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-content button {
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background-color: #0b5ed7;
+    }
   </style>
 </head>
 <body>
-
-  <!-- 🔝 Header with Profile Button -->
   <header>
-    <h1>Dhaki Online Store</h1>
-    <p>Ethnic & Kids Wear - Delivered to Your Doorstep</p>
-
-    <!-- 👤 Profile Menu -->
+    <h1>Little Kids T-Shirts</h1>
     <div class="profile-menu">
-      <button onclick="toggleProfileMenu()">👤 Profile</button>
+      <button id="profileBtn" onclick="handleProfileClick()">👤 Profile</button>
       <div id="profileDropdown" class="dropdown-content">
         <a href="#">My Orders</a>
         <a href="#">Settings</a>
-        <a href="#">Logout</a>
+        <a href="#" onclick="logout()">Logout</a>
       </div>
     </div>
   </header>
 
-  <!-- Banner -->
-  <div class="container my-3">
-    <img src="https://i.postimg.cc/CK2tF931/banner.png" alt="Store Banner" class="img-fluid rounded shadow-sm">
+  <div class="product-container">
+    <div class="product">
+      <img src="https://via.placeholder.com/200x200" alt="T-Shirt 1">
+      <h3>Cool T-Shirt</h3>
+      <p>₹499</p>
+      <button>Add to Cart</button>
+    </div>
+    <!-- Add more product cards here -->
   </div>
 
-  <!-- Filter Buttons -->
-  <div class="container category-filter">
-    <button class="btn btn-outline-primary" onclick="filterProducts('All')">All</button>
-    <button class="btn btn-outline-success" onclick="filterProducts('Kids')">Kids</button>
-    <button class="btn btn-outline-warning" onclick="filterProducts('Saree')">Saree</button>
-    <button class="btn btn-outline-info" onclick="filterProducts('Ethnic')">Ethnic</button>
-  </div>
-
-  <!-- Product List -->
-  <div class="container my-4">
-    <div class="row" id="product-list"></div>
-
-    <!-- Cart Section -->
-    <div class="cart-area">
-      <h3>Cart Summary</h3>
-      <div id="cart-items"></div>
-      <p><strong>Total: ₹<span id="total">0</span></strong></p>
-
-      <div class="mb-3">
-        <label for="address" class="form-label">Delivery Address</label>
-        <textarea id="address" class="form-control" rows="2" placeholder="Enter delivery address"></textarea>
-      </div>
-      <div class="mb-3">
-        <label for="coupon" class="form-label">Coupon Code (optional)</label>
-        <input id="coupon" type="text" class="form-control" placeholder="Enter coupon code">
-      </div>
-
-      <button onclick="clearCart()" class="btn btn-sm btn-clear mb-2">Clear Cart</button>
-      <button onclick="placeOrder()" class="btn btn-order w-100 mb-2">Place Order</button>
+  <!-- 🔐 Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <h3>Login / Signup</h3>
+      <input type="text" id="username" placeholder="Enter username" />
+      <input type="password" id="password" placeholder="Enter password" />
+      <button onclick="login()">Login / Signup</button>
     </div>
   </div>
 
-  <!-- 🔽 Scripts -->
   <script>
-    // Product data
-    const products = [
-      { name: "Kids Kurta Set", price: 899, originalPrice: 1299, category: "Kids" },
-      { name: "Women Saree", price: 1299, originalPrice: 1799, category: "Saree" },
-      { name: "Ethnic Dress", price: 1199, originalPrice: 1599, category: "Ethnic" },
-      { name: "Warner Playground Kids T-Shirt", price: 499, originalPrice: 799, category: "Kids", image: "https://i.postimg.cc/MTRN6LW6/Chat-GPT-Image-Jun-30-2025-12-24-32-PM.png" },
-      { name: "New Ethnic Dress Combo", price: 1499, originalPrice: 1999, category: "Ethnic", image: "https://i.postimg.cc/MXBk2PDs/image.png" }
-    ];
-
-    let cart = {};
-    let currentCategory = 'All';
-
-    function filterProducts(category) {
-      currentCategory = category;
-      displayProducts();
-    }
-
-    function displayProducts() {
-      const list = document.getElementById("product-list");
-      list.innerHTML = "";
-      products.forEach((p, i) => {
-        if (currentCategory !== 'All' && p.category !== currentCategory) return;
-        const discount = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
-        const div = document.createElement("div");
-        div.className = "col-md-4";
-        div.innerHTML = `
-          <div class="product-card">
-            ${p.image ? `<img src="${p.image}" alt="${p.name}">` : ""}
-            <h5 class="mt-2">${p.name}</h5>
-            <p class="offer-label">Special Price</p>
-            <p><span class="original-price">₹${p.originalPrice}</span> <span class="offer-price">₹${p.price} (${discount}% OFF)</span></p>
-            <div class="btn-group">
-              <button class="btn btn-sm btn-primary" onclick="addToCart(${i})">Add to Cart</button>
-              <button class="btn btn-sm btn-warning" onclick="buyNow(${i})">Buy Now</button>
-              <button class="btn btn-sm btn-outline-info" onclick="viewDetails(${i})">View Details</button>
-            </div>
-          </div>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    function addToCart(index) {
-      const item = products[index];
-      cart[item.name] = (cart[item.name] || 0) + 1;
-      updateCart();
-    }
-
-    function changeQty(name, delta) {
-      if (cart[name]) {
-        cart[name] += delta;
-        if (cart[name] <= 0) delete cart[name];
-        updateCart();
+    function handleProfileClick() {
+      const loggedIn = localStorage.getItem("loggedInUser");
+      if (!loggedIn) {
+        document.getElementById("loginModal").style.display = "flex";
+      } else {
+        toggleProfileMenu();
       }
     }
 
-    function removeFromCart(name) {
-      delete cart[name];
-      updateCart();
-    }
-
-    function clearCart() {
-      cart = {};
-      updateCart();
-    }
-
-    function updateCart() {
-      const cartItems = document.getElementById("cart-items");
-      const totalEl = document.getElementById("total");
-      cartItems.innerHTML = "";
-      let total = 0;
-
-      for (let name in cart) {
-        const qty = cart[name];
-        const product = products.find(p => p.name === name);
-        const subtotal = qty * product.price;
-        total += subtotal;
-
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
-          <div><strong>${name}</strong><br>₹${product.price} × ${qty} = ₹${subtotal}</div>
-          <div class="cart-controls">
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeQty('${name}', -1)">−</button>
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeQty('${name}', 1)">+</button>
-            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart('${name}')">🗑</button>
-          </div>
-        `;
-        cartItems.appendChild(div);
-      }
-
-      totalEl.textContent = total;
-    }
-
-    function placeOrder() {
-      const address = document.getElementById("address").value.trim();
-      if (!address || Object.keys(cart).length === 0) {
-        alert("Please enter an address and add items to cart.");
-        return;
-      }
-
-      const productName = Object.entries(cart).map(([name, qty]) => `${name} x${qty}`).join(", ");
-      const total = document.getElementById("total").textContent;
-      const paymentMethod = "Cash on Delivery";
-
-      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url" +
-        "&entry.516469373=" + encodeURIComponent(address) +
-        "&entry.1755887486=" + encodeURIComponent(productName) +
-        "&entry.1544041918=" + encodeURIComponent(total) +
-        "&entry.1821392497=" + encodeURIComponent(paymentMethod);
-
-      window.open(formURL, "_blank");
-    }
-
-    function buyNow(index) {
-      addToCart(index);
-      placeOrder();
-    }
-
-    function viewDetails(index) {
-      alert("More product details coming soon! (Product: " + products[index].name + ")");
-    }
-
-    // 👤 Profile dropdown toggle
     function toggleProfileMenu() {
       const menu = document.getElementById("profileDropdown");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
     }
 
-    // 👤 Hide dropdown when clicking outside
-    window.onclick = function(event) {
-      if (!event.target.closest('.profile-menu')) {
-        const dropdown = document.getElementById("profileDropdown");
-        if (dropdown) dropdown.style.display = "none";
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      if (username && password) {
+        localStorage.setItem("loggedInUser", username);
+        alert("Welcome, " + username + "!");
+        document.getElementById("loginModal").style.display = "none";
+        updateProfileButton();
+      } else {
+        alert("Please enter both username and password.");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      updateProfileButton();
+      document.getElementById("profileDropdown").style.display = "none";
+      alert("You have logged out.");
+    }
+
+    function updateProfileButton() {
+      const user = localStorage.getItem("loggedInUser");
+      const btn = document.getElementById("profileBtn");
+      if (user) {
+        btn.innerText = "👤 " + user;
+      } else {
+        btn.innerText = "👤 Profile";
+      }
+    }
+
+    // Close dropdown/modal when clicking outside
+    window.onclick = function (event) {
+      if (!event.target.closest('.profile-menu') && !event.target.closest('#loginModal')) {
+        document.getElementById("profileDropdown").style.display = "none";
+        document.getElementById("loginModal").style.display = "none";
       }
     };
 
-    // Load products on page load
-    displayProducts();
+    updateProfileButton();
   </script>
-
 </body>
 </html>
