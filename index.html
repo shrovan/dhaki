@@ -1,266 +1,809 @@
-<!DOCTYPE html>`
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dhaki Store</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aurora — Modern Landing Page</title>
+  <meta name="description" content="Aurora is a sleek, responsive landing page with beautiful design, dark mode, and smooth interactions." />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23a78bfa'/%3E%3Cstop offset='1' stop-color='%236366f1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='128' height='128' rx='28' fill='url(%23g)'/%3E%3Cpath d='M28 82c18-32 54-32 72 0-26-12-46-12-72 0z' fill='%23fff' fill-opacity='.85'/%3E%3Ccircle cx='40' cy='44' r='6' fill='%23fff'/%3E%3Ccircle cx='88' cy='44' r='6' fill='%23fff'/%3E%3C/svg%3E" />
+
+  <!-- Font (swap to avoid layout shift) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f1f1f1; }
-    header { background: #0d6efd; color: white; padding: 1rem; text-align: center; position: relative; }
-    .product-card { background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 1rem; margin-bottom: 1.5rem; }
-    .product-card img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
-    .btn-order { background-color: #198754; color: white; }
-    .btn-clear { background-color: #dc3545; color: white; }
-    .original-price { text-decoration: line-through; color: gray; margin-right: 5px; }
-    .offer-price { color: red; font-weight: bold; }
-    .offer-label { color: green; font-weight: bold; margin-bottom: 0; }
-    .btn-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 10px; }
-    .cart-area { background: white; padding: 1rem; border-radius: 10px; margin-top: 2rem; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding: 5px 0; }
-    .cart-controls button { margin-left: 5px; }
-    .category-filter { margin: 1rem 0; text-align: center; }
-    .category-filter button { margin: 0 5px; }
-
-    /* 👤 Profile Button Styles */
-    .profile-menu {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      display: inline-block;
+    /* ========== CSS RESET & THEME TOKENS ========== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    body, h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+    ul[role="list"], ol[role="list"] { list-style: none; padding: 0; margin: 0; }
+    img, picture { max-width: 100%; display: block; }
+    button, input, textarea, select { font: inherit; }
+    :root {
+      --bg: #0b1020;                 /* used in dark */
+      --surface: #0f172a;
+      --text: #0b1220;               /* used in light */
+      --muted: #64748b;
+      --accent: #6366f1;
+      --accent-2: #a78bfa;
+      --ring: color-mix(in oklab, var(--accent), white 20%);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 14px;
+      --shadow-1: 0 10px 30px -10px rgba(2, 6, 23, .25);
+      --shadow-2: 0 25px 50px -12px rgba(2, 6, 23, .35);
+      --container: 1120px;
+      color-scheme: light dark;
+    }
+    :root.light {
+      --page: #ffffff;
+      --card: #f8fafc;
+      --text-1: #0b1220;
+      --text-2: #334155;
+      --border: #e2e8f0;
+      --grid: rgba(99,102,241,.06);
+    }
+    :root.dark {
+      --page: var(--bg);
+      --card: #0b1220;
+      --text-1: #e5e7eb;
+      --text-2: #cbd5e1;
+      --border: #1f2a44;
+      --grid: rgba(99,102,241,.11);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { color-scheme: dark; }
+      :root:not(.light) { --page: var(--bg); --card:#0b1220; --text-1:#e5e7eb; --text-2:#cbd5e1; --border:#1f2a44; --grid: rgba(99,102,241,.11); }
+    }
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+      background: radial-gradient(1500px 800px at 80% -20%, var(--grid), transparent 50%) no-repeat, var(--page);
+      color: var(--text-1);
+      line-height: 1.6;
+      min-height: 100dvh;
     }
 
-    .profile-menu button {
-      background-color: white;
-      color: #0d6efd;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
+    /* ========== HELPERS ========== */
+    .container { width: min(100% - 2rem, var(--container)); margin-inline: auto; }
+    .pill { padding: .35rem .7rem; border-radius: 999px; background: color-mix(in oklab, var(--accent), transparent 80%); color: var(--accent); display: inline-flex; gap:.5rem; align-items:center; font-weight:600; font-size:.8rem; }
+    .btn {
+      --bgc: var(--accent);
+      display:inline-flex; align-items:center; gap:.6rem;
+      background: var(--bgc);
+      color: white; padding:.9rem 1.1rem; border-radius: 12px; border: 0;
+      box-shadow: var(--shadow-1);
+      transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+      cursor: pointer; text-decoration:none; font-weight: 600;
+    }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: var(--shadow-2); }
+    .btn.secondary { --bgc: color-mix(in oklab, var(--accent), white 70%); color: var(--text-1); }
+    .btn.ghost { --bgc: transparent; color: var(--text-1); border: 1px solid var(--border); box-shadow: none; }
+    .badge { display:inline-flex; align-items:center; gap:.4rem; background: var(--card); border:1px solid var(--border); padding:.35rem .6rem; border-radius: 10px; font-size:.8rem;}
+    .grid { display:grid; gap:1.25rem; }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 900px) { .grid.cols-3 { grid-template-columns: 1fr; } .grid.cols-2 { grid-template-columns: 1fr; } }
+
+    /* ========== PROGRESS BAR & TO TOP ========== */
+    .progress {
+      position: fixed; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform-origin: 0 50%; transform: scaleX(0); z-index: 60;
+    }
+    .to-top {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 60;
+      inline-size: 44px; block-size: 44px; display:grid; place-items:center;
+      background: var(--accent); color:#fff; border-radius: 999px; border:0; cursor: pointer; box-shadow: var(--shadow-1);
+      opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+    }
+    .to-top.show { opacity: 1; visibility: visible; transform: translateY(-4px); }
+
+    /* ========== NAVBAR ========== */
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(180%) blur(12px);
+      background: color-mix(in oklab, var(--page), transparent 10%); border-bottom: 1px solid var(--border);
+    }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding: .6rem 0; }
+    .brand { display:flex; align-items:center; gap:.6rem; text-decoration:none; color: inherit; }
+    .brand svg { inline-size: 28px; block-size: 28px; }
+    .brand span { font-weight:800; letter-spacing:.2px; }
+    nav ul { display:flex; gap:.6rem; }
+    nav a { color: var(--text-2); text-decoration:none; padding:.6rem .8rem; border-radius: 10px; }
+    nav a:hover, nav a[aria-current="page"] { background: var(--card); color: var(--text-1); }
+    .nav-actions { display:flex; align-items:center; gap:.6rem; }
+    .theme-toggle, .menu-btn {
+      inline-size: 40px; block-size: 40px; display:grid; place-items:center; border-radius: 10px; border:1px solid var(--border); background: var(--card); cursor: pointer;
+    }
+    .menu-btn { display: none; }
+    @media (max-width: 900px) {
+      nav { display: none; }
+      .menu-btn { display: grid; }
+      .mobile-menu {
+        position: fixed; inset: 64px 0 auto 0; background: var(--page); border-bottom:1px solid var(--border); display:none; z-index: 40;
+      }
+      .mobile-menu.open { display:block; }
+      .mobile-menu a { display:block; padding: 1rem 1.25rem; text-decoration:none; color: var(--text-1); border-top:1px solid var(--border); }
+      .mobile-menu a:hover { background: var(--card); }
     }
 
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      right: 0;
-      background-color: white;
-      min-width: 150px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-      border-radius: 6px;
-      overflow: hidden;
+    /* ========== HERO ========== */
+    .hero { padding: 5.5rem 0 3.5rem; position: relative; overflow: clip; }
+    .hero .content { display:grid; grid-template-columns: 1.15fr .85fr; align-items:center; gap: 2rem; }
+    @media (max-width: 900px) { .hero .content { grid-template-columns: 1fr; } }
+    .title {
+      font-size: clamp(2rem, 2rem + 3vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 800;
     }
+    .subtitle { color: var(--text-2); max-inline-size: 60ch; }
+    .cta { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; margin-top: 1rem; }
+    .stats { display:flex; gap:1.25rem; margin-top: 1.25rem; flex-wrap:wrap; }
+    .stat { display:flex; flex-direction:column; padding:.8rem 1rem; border-radius: 12px; background: var(--card); border:1px solid var(--border); min-inline-size: 140px; }
+    .hero-visual {
+      position: relative; aspect-ratio: 4/3; border-radius: 16px; border:1px solid var(--border); overflow: hidden;
+      background:
+        radial-gradient(800px 400px at 100% 0%, rgba(99,102,241,.25), transparent 60%),
+        radial-gradient(800px 400px at 0% 100%, rgba(167,139,250,.25), transparent 60%),
+        linear-gradient(180deg, color-mix(in oklab, var(--card), transparent 0%), color-mix(in oklab, var(--card), transparent 0%));
+      box-shadow: var(--shadow-2);
+      isolation: isolate;
+    }
+    .orbit {
+      position:absolute; inset:0; display:grid; place-items:center; pointer-events:none;
+      --size: 84%;
+      --dot: 12px;
+    }
+    .orbit .ring {
+      position:absolute; inline-size: var(--size); block-size: var(--size); border-radius:50%;
+      border:1px dashed color-mix(in oklab, var(--accent), transparent 70%);
+      animation: spin 24s linear infinite;
+    }
+    .orbit .ring:nth-child(2){ inline-size: calc(var(--size) * .7); block-size: calc(var(--size) * .7); animation-duration: 16s; }
+    .orbit .ring:nth-child(3){ inline-size: calc(var(--size) * .46); block-size: calc(var(--size) * .46); animation-duration: 10s; }
+    .orbit .dot {
+      position:absolute; inline-size: var(--dot); block-size: var(--dot); border-radius:50%; background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent), transparent 80%);
+      transform: translateX(calc(var(--size)/2));
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(1turn) translateX(calc(var(--size)/2)); } }
 
-    .dropdown-content a {
-      color: black;
-      padding: 10px 16px;
-      text-decoration: none;
-      display: block;
+    /* ========== FEATURES ========== */
+    section { padding: 3.5rem 0; }
+    .section-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; margin-bottom: 1.8rem; }
+    .feature {
+      background: var(--card); border:1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display:flex; gap:1rem; align-items:flex-start;
     }
+    .feature .icon { inline-size: 42px; block-size: 42px; border-radius: 12px; display:grid; place-items:center; background: color-mix(in oklab, var(--accent), transparent 88%); color: var(--accent); flex: 0 0 auto; }
+    .feature h3 { font-size: 1.1rem; margin-bottom: .2rem; }
 
-    .dropdown-content a:hover {
-      background-color: #f1f1f1;
+    /* ========== GALLERY / PORTFOLIO ========== */
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display:flex; flex-direction:column;
     }
+    .card .media {
+      aspect-ratio: 16/9; background:
+        radial-gradient(600px 300px at 0% 100%, rgba(99,102,241,.3), transparent 50%),
+        radial-gradient(600px 300px at 100% 0%, rgba(167,139,250,.3), transparent 50%),
+        linear-gradient(180deg, color-mix(in oklab, var(--card), transparent 0%), color-mix(in oklab, var(--card), transparent 0%));
+      display:grid; place-items:center;
+    }
+    .chip { font-size:.75rem; color: var(--accent); background: color-mix(in oklab, var(--accent), transparent 90%); border: 1px solid color-mix(in oklab, var(--accent), transparent 70%); padding:.25rem .5rem; border-radius: 999px; }
+
+    /* ========== PRICING ========== */
+    .pricing { display:grid; gap:1.25rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .plan { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; position: relative; display:flex; flex-direction:column; }
+    .plan.popular { outline: 2px solid color-mix(in oklab, var(--accent), transparent 20%); }
+    .plan h3 { font-size:1.25rem; }
+    .price { font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem); font-weight:800; letter-spacing:-0.02em; margin:.6rem 0; }
+    .plan ul { margin-top:.6rem; display:grid; gap:.4rem; }
+    .plan li { display:flex; align-items:center; gap:.5rem; }
+    @media (max-width: 900px) { .pricing { grid-template-columns: 1fr; } }
+
+    /* ========== TESTIMONIALS ========== */
+    .testimonials { display:grid; gap:1.25rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 900px) { .testimonials { grid-template-columns: 1fr; } }
+    .quote { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+    .quote .who { display:flex; align-items:center; gap:.7rem; margin-top:.9rem; }
+    .avatar { inline-size: 36px; block-size: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+
+    /* ========== FAQ ========== */
+    details.faq {
+      background: var(--card); border:1px solid var(--border); border-radius: var(--radius); padding: .9rem 1rem;
+    }
+    details.faq[open] summary { color: var(--accent); }
+    details.faq summary { list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; font-weight:600; }
+    details.faq summary::-webkit-details-marker { display:none; }
+
+    /* ========== CONTACT ========== */
+    form {
+      background: var(--card); border:1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display:grid; gap:.9rem;
+    }
+    .row { display:grid; gap:.9rem; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 700px){ .row { grid-template-columns: 1fr; } }
+    label { font-weight: 600; font-size:.9rem; }
+    input[type="text"], input[type="email"], textarea, select {
+      width: 100%; padding: .8rem .9rem; border-radius: 10px; border:1px solid var(--border); background: var(--page); color: var(--text-1);
+      outline: none; box-shadow: none; transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--ring); box-shadow: 0 0 0 4px color-mix(in oklab, var(--ring), transparent 70%); }
+    .error { color: var(--danger); font-size:.85rem; min-height: 1.1em; }
+
+    /* ========== REVEAL ANIMATIONS ========== */
+    .reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal, .orbit .ring, .orbit .dot { animation: none !important; transition: none !important; } }
+
+    /* ========== FOOTER ========== */
+    footer { padding: 2.5rem 0; border-top: 1px solid var(--border); color: var(--text-2); }
+    .footer-grid { display:grid; gap:1.25rem; grid-template-columns: 1.3fr repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 900px){ .footer-grid { grid-template-columns: 1fr; } }
+    .foot-note { margin-top: .8rem; font-size:.9rem; }
+    .credits { display:flex; gap:.7rem; align-items:center; flex-wrap:wrap; margin-top:.6rem; }
+    .credits .badge { background: transparent; }
+
   </style>
 </head>
 <body>
+  <!-- scroll progress -->
+  <div class="progress" id="progress"></div>
 
-  <!-- 🔝 Header with Profile Button -->
+  <!-- Header / Navbar -->
   <header>
-    <h1>Dhaki Online Store</h1>
-    <p>Ethnic & Kids Wear - Delivered to Your Doorstep</p>
+    <div class="container nav">
+      <a class="brand" href="#" aria-label="Aurora homepage">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><rect x="3" y="6" width="42" height="36" rx="10" fill="url(#lg)"/><circle cx="16" cy="20" r="3" fill="#fff"/><circle cx="32" cy="20" r="3" fill="#fff"/><path d="M8 30c8-12 24-12 32 0-12-6-20-6-32 0z" fill="#fff" fill-opacity=".9"/></svg>
+        <span>Aurora</span>
+      </a>
 
-    <!-- 👤 Profile Menu -->
-    <div class="profile-menu">
-      <button onclick="toggleProfileMenu()">👤 Profile</button>
-      <div id="profileDropdown" class="dropdown-content">
-        <a href="#">My Orders</a>
-        <a href="#">Settings</a>
-        <a href="#">Logout</a>
+      <nav aria-label="primary">
+        <ul role="list">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#portfolio">Work</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#testimonials">Love</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+          <!-- moon/sun -->
+          <svg id="iconSun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.45 14.32l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM1 13h3v-2H1v2zm19 0h3v-2h-3v2zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM6.76 19.16l-1.42 1.42-1.79-1.8 1.41-1.41 1.8 1.79zM20.45 4.05l-1.41-1.41-1.79 1.8 1.4 1.4 1.8-1.79zM12 6a6 6 0 100 12A6 6 0 0012 6z"/></svg>
+          <svg id="iconMoon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="display:none"><path fill="currentColor" d="M21.64 13a9 9 0 01-11.64 7.64A9 9 0 1019 4.36 7 7 0 0121.64 13z"/></svg>
+        </button>
+        <a class="btn ghost" href="#pricing" aria-label="View pricing">Get started</a>
+        <button class="menu-btn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
+        </button>
       </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+      <a href="#features">Features</a>
+      <a href="#portfolio">Work</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Love</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
     </div>
   </header>
 
-  <!-- Banner -->
-  <div class="container my-3">
-    <img src="https://i.postimg.cc/CK2tF931/banner.png" alt="Store Banner" class="img-fluid rounded shadow-sm">
-  </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container content">
+      <div>
+        <span class="pill">✨ New: Instant Themes</span>
+        <h1 class="title">Design that feels <span style="color:var(--accent)">effortless</span>.</h1>
+        <p class="subtitle">Aurora is a meticulously crafted starter that helps you launch stunning sites fast — with clean markup, modern CSS, and delightful micro-interactions.</p>
+        <div class="cta">
+          <a class="btn" href="#contact">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M2 12l1.41-1.41L11 18.17V2h2v16.17l7.59-7.58L22 12l-10 10z"/></svg>
+            Book a call
+          </a>
+          <a class="btn secondary" href="#portfolio">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M10 8.64L15.27 12 10 15.36V8.64M8 5v14l11-7L8 5z"/></svg>
+            See work
+          </a>
+          <span class="badge" aria-label="Customer satisfaction 4.9 out of 5">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 17.27l6.18 3.73-1.64-7.03L21 9.24l-7.19-.61L12 2 10.19 8.63 3 9.24l4.46 4.73L5.82 21z"/></svg>
+            4.9/5 on 500+ reviews
+          </span>
+        </div>
 
-  <!-- Filter Buttons -->
-  <div class="container category-filter">
-    <button class="btn btn-outline-primary" onclick="filterProducts('All')">All</button>
-    <button class="btn btn-outline-success" onclick="filterProducts('Kids')">Kids</button>
-    <button class="btn btn-outline-warning" onclick="filterProducts('Saree')">Saree</button>
-    <button class="btn btn-outline-info" onclick="filterProducts('Ethnic')">Ethnic</button>
-  </div>
-
-  <!-- Product List -->
-  <div class="container my-4">
-    <div class="row" id="product-list"></div>
-
-    <!-- Cart Section -->
-    <div class="cart-area">
-      <h3>Cart Summary</h3>
-      <div id="cart-items"></div>
-      <p><strong>Total: ₹<span id="total">0</span></strong></p>
-
-      <div class="mb-3">
-        <label for="address" class="form-label">Delivery Address</label>
-        <textarea id="address" class="form-control" rows="2" placeholder="Enter delivery address"></textarea>
+        <div class="stats" aria-label="Key stats">
+          <div class="stat">
+            <strong style="font-size:1.3rem">120+</strong>
+            <span class="muted">Sites launched</span>
+          </div>
+          <div class="stat">
+            <strong style="font-size:1.3rem">2.1M</strong>
+            <span class="muted">Monthly visitors</span>
+          </div>
+          <div class="stat">
+            <strong style="font-size:1.3rem">98%</strong>
+            <span class="muted">Faster builds</span>
+          </div>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="coupon" class="form-label">Coupon Code (optional)</label>
-        <input id="coupon" type="text" class="form-control" placeholder="Enter coupon code">
-      </div>
 
-      <button onclick="clearCart()" class="btn btn-sm btn-clear mb-2">Clear Cart</button>
-      <button onclick="placeOrder()" class="btn btn-order w-100 mb-2">Place Order</button>
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="orbit">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 🔽 Scripts -->
-  <script>
-    // Product data
-    const products = [
-      { name: "Kids Kurta Set", price: 899, originalPrice: 1299, category: "Kids" },
-      { name: "Women Saree", price: 1299, originalPrice: 1799, category: "Saree" },
-      { name: "Ethnic Dress", price: 1199, originalPrice: 1599, category: "Ethnic" },
-      { name: "Warner Playground Kids T-Shirt", price: 499, originalPrice: 799, category: "Kids", image: "https://i.postimg.cc/MTRN6LW6/Chat-GPT-Image-Jun-30-2025-12-24-32-PM.png" },
-      { name: "New Ethnic Dress Combo", price: 1499, originalPrice: 1999, category: "Ethnic", image: "https://i.postimg.cc/MXBk2PDs/image.png" }
-    ];
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="pill">Why Aurora</span>
+          <h2 class="title" style="font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);">Built for speed & polish</h2>
+        </div>
+        <a class="btn ghost" href="#pricing">Compare plans</a>
+      </div>
 
-    let cart = {};
-    let currentCategory = 'All';
+      <div class="grid cols-3">
+        <article class="feature reveal">
+          <div class="icon" aria-hidden="true">⚡</div>
+          <div>
+            <h3>Instant performance</h3>
+            <p>Semantic HTML, CSS variables, and zero heavy frameworks. Lighthouse-friendly out of the box.</p>
+          </div>
+        </article>
 
-    function filterProducts(category) {
-      currentCategory = category;
-      displayProducts();
-    }
+        <article class="feature reveal">
+          <div class="icon" aria-hidden="true">🎨</div>
+          <div>
+            <h3>Themeable</h3>
+            <p>Dark mode, accent colors, and spacing scale — all tweakable in one place.</p>
+          </div>
+        </article>
 
-    function displayProducts() {
-      const list = document.getElementById("product-list");
-      list.innerHTML = "";
-      products.forEach((p, i) => {
-        if (currentCategory !== 'All' && p.category !== currentCategory) return;
-        const discount = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
-        const div = document.createElement("div");
-        div.className = "col-md-4";
-        div.innerHTML = `
-          <div class="product-card">
-            ${p.image ? `<img src="${p.image}" alt="${p.name}">` : ""}
-            <h5 class="mt-2">${p.name}</h5>
-            <p class="offer-label">Special Price</p>
-            <p><span class="original-price">₹${p.originalPrice}</span> <span class="offer-price">₹${p.price} (${discount}% OFF)</span></p>
-            <div class="btn-group">
-              <button class="btn btn-sm btn-primary" onclick="addToCart(${i})">Add to Cart</button>
-              <button class="btn btn-sm btn-warning" onclick="buyNow(${i})">Buy Now</button>
-              <button class="btn btn-sm btn-outline-info" onclick="viewDetails(${i})">View Details</button>
+        <article class="feature reveal">
+          <div class="icon" aria-hidden="true">🔐</div>
+          <div>
+            <h3>Accessible by default</h3>
+            <p>Reduced-motion support, focus rings, and ARIA labels everywhere they matter.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio / Gallery -->
+  <section id="portfolio">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="pill">Case Studies</span>
+          <h2 class="title" style="font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);">Recent work</h2>
+        </div>
+        <div class="badge">Updated weekly</div>
+      </div>
+
+      <div class="grid cols-3">
+        <article class="card reveal">
+          <div class="media">
+            <span class="chip">eCommerce</span>
+          </div>
+          <div style="padding:1rem;">
+            <h3>Velvet Apparel</h3>
+            <p>Increased conversion by 22% with simplified checkout and smarter imagery.</p>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="media">
+            <span class="chip">SaaS</span>
+          </div>
+          <div style="padding:1rem;">
+            <h3>Nimbus Analytics</h3>
+            <p>Cut onboarding time to 90 seconds with a crisp flow and guided tours.</p>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="media">
+            <span class="chip">Creative</span>
+          </div>
+          <div style="padding:1rem;">
+            <h3>Studio North</h3>
+            <p>Portfolio that feels alive with subtle motion and strong typography.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="pill">Pricing</span>
+          <h2 class="title" style="font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);">Simple, transparent plans</h2>
+        </div>
+        <div class="badge">30-day money-back guarantee</div>
+      </div>
+
+      <div class="pricing">
+        <article class="plan reveal">
+          <h3>Starter</h3>
+          <p class="price">$9<span style="font-size:.9rem;color:var(--muted)">/mo</span></p>
+          <ul role="list">
+            <li>✅ 1 project</li>
+            <li>✅ Email support</li>
+            <li>✅ Basic analytics</li>
+          </ul>
+          <a class="btn" style="margin-top: auto" href="#contact">Choose Starter</a>
+        </article>
+
+        <article class="plan popular reveal" aria-label="Most popular plan">
+          <span class="badge" style="position:absolute; right:1rem; top:1rem;">Most popular</span>
+          <h3>Pro</h3>
+          <p class="price">$29<span style="font-size:.9rem;color:var(--muted)">/mo</span></p>
+          <ul role="list">
+            <li>✅ 5 projects</li>
+            <li>✅ Priority support</li>
+            <li>✅ Advanced analytics</li>
+            <li>✅ Custom domains</li>
+          </ul>
+          <a class="btn" style="margin-top: auto" href="#contact">Choose Pro</a>
+        </article>
+
+        <article class="plan reveal">
+          <h3>Elite</h3>
+          <p class="price">$99<span style="font-size:.9rem;color:var(--muted)">/mo</span></p>
+          <ul role="list">
+            <li>✅ Unlimited projects</li>
+            <li>✅ 24/7 support</li>
+            <li>✅ Conversion audits</li>
+            <li>✅ Quarterly strategy</li>
+          </ul>
+          <a class="btn" style="margin-top: auto" href="#contact">Choose Elite</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="pill">Wall of love</span>
+          <h2 class="title" style="font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);">What clients say</h2>
+        </div>
+        <a class="btn ghost" href="#contact">Join them</a>
+      </div>
+
+      <div class="testimonials">
+        <figure class="quote reveal">
+          <blockquote>“We shipped in days, not weeks. Our metrics jumped almost immediately.”</blockquote>
+          <figcaption class="who">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Maya Patel</strong><br>
+              <span class="muted">CMO, Nimbus</span>
             </div>
+          </figcaption>
+        </figure>
+
+        <figure class="quote reveal">
+          <blockquote>“The attention to detail is wild. It just feels premium.”</blockquote>
+          <figcaption class="who">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Jonas Weber</strong><br>
+              <span class="muted">Founder, Studio North</span>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="quote reveal">
+          <blockquote>“Finally a site our team can update without breaking anything.”</blockquote>
+          <figcaption class="who">
+            <div class="avatar" aria-hidden="true"></div>
+            <div>
+              <strong>Amelia Chen</strong><br>
+              <span class="muted">Ops Lead, Velvet</span>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="pill">FAQ</span>
+          <h2 class="title" style="font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);">All the details</h2>
+        </div>
+      </div>
+
+      <div class="grid cols-2">
+        <details class="faq reveal">
+          <summary>Is Aurora production-ready?
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </summary>
+          <p>Yes. It’s pure HTML/CSS/JS with accessibility, performance, and SEO best practices baked in.</p>
+        </details>
+
+        <details class="faq reveal">
+          <summary>Can I customize the colors?
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </summary>
+          <p>Absolutely — adjust the CSS variables in <code>:root</code> for instant theming.</p>
+        </details>
+
+        <details class="faq reveal">
+          <summary>Does it support dark mode?
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </summary>
+          <p>Yes. There’s a toggle and it respects the OS preference. Your choice persists via <code>localStorage</code>.</p>
+        </details>
+
+        <details class="faq reveal">
+          <summary>Can I integrate forms?
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </summary>
+          <p>Yep — use any form backend (e.g., Netlify, Formspree). Client-side validation is included.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="pill">Contact</span>
+          <h2 class="title" style="font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);">Let’s build something</h2>
+        </div>
+        <div class="badge">We reply within 24h</div>
+      </div>
+
+      <form id="contactForm" novalidate>
+        <div class="row">
+          <div>
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" placeholder="Alex Johnson" autocomplete="name" required>
+            <div class="error" id="err-name" aria-live="polite"></div>
           </div>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    function addToCart(index) {
-      const item = products[index];
-      cart[item.name] = (cart[item.name] || 0) + 1;
-      updateCart();
-    }
-
-    function changeQty(name, delta) {
-      if (cart[name]) {
-        cart[name] += delta;
-        if (cart[name] <= 0) delete cart[name];
-        updateCart();
-      }
-    }
-
-    function removeFromCart(name) {
-      delete cart[name];
-      updateCart();
-    }
-
-    function clearCart() {
-      cart = {};
-      updateCart();
-    }
-
-    function updateCart() {
-      const cartItems = document.getElementById("cart-items");
-      const totalEl = document.getElementById("total");
-      cartItems.innerHTML = "";
-      let total = 0;
-
-      for (let name in cart) {
-        const qty = cart[name];
-        const product = products.find(p => p.name === name);
-        const subtotal = qty * product.price;
-        total += subtotal;
-
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
-          <div><strong>${name}</strong><br>₹${product.price} × ${qty} = ₹${subtotal}</div>
-          <div class="cart-controls">
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeQty('${name}', -1)">−</button>
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeQty('${name}', 1)">+</button>
-            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart('${name}')">🗑</button>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email" required>
+            <div class="error" id="err-email" aria-live="polite"></div>
           </div>
-        `;
-        cartItems.appendChild(div);
-      }
+        </div>
 
-      totalEl.textContent = total;
-    }
+        <div class="row">
+          <div>
+            <label for="budget">Budget</label>
+            <select id="budget" name="budget" required>
+              <option value="">Select…</option>
+              <option value="under-2k">Under $2k</option>
+              <option value="2-5k">$2k–$5k</option>
+              <option value="5-10k">$5k–$10k</option>
+              <option value="10k-plus">$10k+</option>
+            </select>
+            <div class="error" id="err-budget" aria-live="polite"></div>
+          </div>
+          <div>
+            <label for="timeline">Timeline</label>
+            <select id="timeline" name="timeline" required>
+              <option value="">Select…</option>
+              <option value="asap">ASAP</option>
+              <option value="2-4w">2–4 weeks</option>
+              <option value="1-3m">1–3 months</option>
+              <option value="flexible">Flexible</option>
+            </select>
+            <div class="error" id="err-timeline" aria-live="polite"></div>
+          </div>
+        </div>
 
-    function placeOrder() {
-      const address = document.getElementById("address").value.trim();
-      if (!address || Object.keys(cart).length === 0) {
-        alert("Please enter an address and add items to cart.");
-        return;
-      }
+        <div>
+          <label for="message">Project details</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us about your goals…" required></textarea>
+          <div class="error" id="err-message" aria-live="polite"></div>
+        </div>
 
-      const productName = Object.entries(cart).map(([name, qty]) => `${name} x${qty}`).join(", ");
-      const total = document.getElementById("total").textContent;
-      const paymentMethod = "Cash on Delivery";
+        <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+          <label class="badge"><input type="checkbox" id="tos" required> I agree to the terms</label>
+          <div class="error" id="err-tos" aria-live="polite"></div>
+        </div>
 
-      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfoM0rr3xzcpDg2O17CWhK58-25Df-2l1Dv3k6bzYnnc9BptA/viewform?usp=pp_url" +
-        "&entry.516469373=" + encodeURIComponent(address) +
-        "&entry.1755887486=" + encodeURIComponent(productName) +
-        "&entry.1544041918=" + encodeURIComponent(total) +
-        "&entry.1821392497=" + encodeURIComponent(paymentMethod);
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;">
+          <button type="submit" class="btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+            Send message
+          </button>
+          <span id="formStatus" class="badge" role="status" aria-live="polite" style="display:none"></span>
+        </div>
+      </form>
+    </div>
+  </section>
 
-      window.open(formURL, "_blank");
-    }
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="#" aria-label="Aurora homepage">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><rect x="3" y="6" width="42" height="36" rx="10" fill="url(#lg2)"/><circle cx="16" cy="20" r="3" fill="#fff"/><circle cx="32" cy="20" r="3" fill="#fff"/><path d="M8 30c8-12 24-12 32 0-12-6-20-6-32 0z" fill="#fff" fill-opacity=".9"/></svg>
+          <span>Aurora</span>
+        </a>
+        <p class="foot-note">Sleek web experiences, handcrafted with care.</p>
+        <div class="credits">
+          <span class="badge">Made with HTML/CSS/JS</span>
+          <span class="badge">WCAG-friendly</span>
+          <span class="badge">MIT Template</span>
+        </div>
+      </div>
+      <div>
+        <strong>Company</strong>
+        <ul role="list">
+          <li><a href="#features">About</a></li>
+          <li><a href="#portfolio">Work</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <strong>Resources</strong>
+        <ul role="list">
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#" aria-disabled="true">Changelog</a></li>
+        </ul>
+      </div>
+      <div>
+        <strong>Legal</strong>
+        <ul role="list">
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container" style="margin-top:1.2rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+      <small>© <span id="year"></span> Aurora. All rights reserved.</small>
+      <a class="badge" href="#" aria-label="Back to top link" onclick="window.scrollTo({top:0, behavior:'smooth'})">Back to top ↑</a>
+    </div>
+  </footer>
 
-    function buyNow(index) {
-      addToCart(index);
-      placeOrder();
-    }
+  <!-- Back to Top -->
+  <button class="to-top" id="toTop" aria-label="Scroll back to top" title="Back to top">
+    ↑
+  </button>
 
-    function viewDetails(index) {
-      alert("More product details coming soon! (Product: " + products[index].name + ")");
-    }
-
-    // 👤 Profile dropdown toggle
-    function toggleProfileMenu() {
-      const menu = document.getElementById("profileDropdown");
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    }
-
-    // 👤 Hide dropdown when clicking outside
-    window.onclick = function(event) {
-      if (!event.target.closest('.profile-menu')) {
-        const dropdown = document.getElementById("profileDropdown");
-        if (dropdown) dropdown.style.display = "none";
-      }
+  <script>
+    // ===== Theme handling (persisted) =====
+    const root = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const iconSun = document.getElementById('iconSun');
+    const iconMoon = document.getElementById('iconMoon');
+    const savedTheme = localStorage.getItem('theme');
+    const setTheme = (mode) => {
+      root.classList.remove('light','dark');
+      root.classList.add(mode);
+      localStorage.setItem('theme', mode);
+      const isDark = mode === 'dark';
+      iconSun.style.display = isDark ? 'none' : '';
+      iconMoon.style.display = isDark ? '' : 'none';
     };
+    // initial
+    if (savedTheme) setTheme(savedTheme);
+    else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
+    }
+    themeToggle.addEventListener('click', () => {
+      setTheme(root.classList.contains('dark') ? 'light' : 'dark');
+    });
 
-    // Load products on page load
-    displayProducts();
+    // ===== Mobile menu =====
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    mobileMenu.addEventListener('click', (e) => {
+      if (e.target.matches('a')) {
+        mobileMenu.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // ===== Scroll progress + to top =====
+    const progress = document.getElementById('progress');
+    const toTop = document.getElementById('toTop');
+    const onScroll = () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const p = height > 0 ? scrollTop / height : 0;
+      progress.style.transform = `scaleX(${p})`;
+      if (scrollTop > 600) toTop.classList.add('show'); else toTop.classList.remove('show');
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ===== Reveal on scroll (IntersectionObserver) =====
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      })
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+
+    // ===== Contact form validation =====
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('formStatus');
+    const setErr = (id, msg='') => document.getElementById('err-' + id).textContent = msg;
+    const getVal = id => document.getElementById(id).value.trim();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let ok = true;
+
+      const name = getVal('name');
+      const email = getVal('email');
+      const budget = getVal('budget');
+      const timeline = getVal('timeline');
+      const message = getVal('message');
+      const tos = document.getElementById('tos').checked;
+
+      // simple validations
+      if (name.length < 2) { setErr('name','Please enter your full name.'); ok = false; } else setErr('name');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr('email','Enter a valid email address.'); ok = false; } else setErr('email');
+      if (!budget) { setErr('budget','Please select a budget.'); ok = false; } else setErr('budget');
+      if (!timeline) { setErr('timeline','Please select a timeline.'); ok = false; } else setErr('timeline');
+      if (message.length < 10) { setErr('message','Tell us a bit more (10+ chars).'); ok = false; } else setErr('message');
+      if (!tos) { setErr('tos','You must agree to the terms.'); ok = false; } else setErr('tos');
+
+      if (!ok) return;
+
+      // Simulated submit (replace with your API endpoint)
+      try {
+        status.style.display = 'inline-flex';
+        status.textContent = 'Sending…';
+        status.style.color = 'inherit';
+
+        // Simulate latency
+        await new Promise(r => setTimeout(r, 900));
+
+        // Example payload
+        const payload = { name, email, budget, timeline, message, time: new Date().toISOString() };
+        console.log('Form payload →', payload);
+
+        status.textContent = 'Thanks! We\'ll be in touch shortly.';
+        status.style.background = 'color-mix(in oklab, var(--success), transparent 85%)';
+        status.style.border = '1px solid color-mix(in oklab, var(--success), transparent 60%)';
+        form.reset();
+      } catch (err) {
+        status.style.display = 'inline-flex';
+        status.textContent = 'Something went wrong. Please try again.';
+        status.style.color = 'var(--danger)';
+      }
+    });
+
+    // ===== current year =====
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-
 </body>
 </html>
